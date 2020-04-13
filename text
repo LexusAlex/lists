@@ -17,3 +17,6 @@ backend_nginx - backend
     backend-php-fpm - php
     backend-php-cli - php cli
     backend-mariadb - db maridb
+
+React js это библиотека для построения интерфейсов
+Create React App

@@ -30,3 +30,14 @@ docker-rm-volume:
 # Собрать composer
 backend-composer-install:
 	docker-compose run --rm backend-php-cli composer install
+
+frontend-clear:
+	docker run --rm -v ${PWD}/frontend:/node -w /node alpine sh -c 'rm -rf .ready build'
+
+frontend-init: frontend-yarn-install frontend-ready
+
+frontend-yarn-install:
+	docker-compose run --rm frontend-node-cli yarn install
+
+frontend-ready:
+	docker run --rm -v ${PWD}/frontend:/node -w /node alpine touch .ready
