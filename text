@@ -1,1 +1,19 @@
 Структура проекта Списки
+
+Шлюз gateway 80
+
+backend 8081 -> php-fpm 9000
+
+frontend 8080 80
+
+Название проекта в docker
+COMPOSE_PROJECT_NAME=test
+
+Контейнеры
+
+gateway_nginx - Главный сервер который все разруливает
+frontend_nginx - frontend
+backend_nginx - backend
+    backend-php-fpm - php
+    backend-php-cli - php cli
+    backend-mariadb - db maridb

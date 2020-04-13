@@ -1,0 +1,32 @@
+# очищаем, скачиваем, собираем, поднимаем
+init: docker-down-clear docker-pull docker-build docker-up
+up: docker-up
+down: docker-down
+
+# Запуск всех контейнеров
+docker-up:
+	docker-compose up -d
+
+# Остановка всех контейнеров
+docker-down:
+	docker-compose down --remove-orphans
+
+# Остановка и очистка всех контейнеров
+docker-down-clear:
+	docker-compose down -v --remove-orphans
+
+# Скачать образы
+docker-pull:
+	docker-compose pull
+
+# Пересобрать контейнеры
+docker-build:
+	docker-compose build
+
+# Удалить все тома
+docker-rm-volume:
+	docker volume prune
+
+# Собрать composer
+backend-composer-install:
+	docker-compose run --rm backend-php-cli composer install
