@@ -27,9 +27,13 @@ docker-build:
 docker-rm-volume:
 	docker volume prune
 
-# Собрать composer
+# Запустить установку пакетов composer
 backend-composer-install:
 	docker-compose run --rm backend-php-cli composer install
+
+# Обновить классы для автозагрузчика
+backend-composer-dump-autoload:
+	docker-compose run --rm backend-php-cli composer dump-autoload
 
 frontend-clear:
 	docker run --rm -v ${PWD}/frontend:/node -w /node alpine sh -c 'rm -rf .ready build'

@@ -1,0 +1,30 @@
+{
+    "name": "lexusalex/lists",
+    "type": "project",
+    "config": {
+        "process-timeout": 0,
+        "sort-packages": true
+    },
+    "authors": [
+        {
+            "name": "Alexey Shmelev",
+            "email": "alexsey_89@bk.ru"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Lists\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.4",
+        "ext-PDO": "^7.4",
+        "slim/slim": "^4.4",
+        "slim/psr7": "^1.0"
+    }
+}
