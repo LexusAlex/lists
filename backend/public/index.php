@@ -13,7 +13,6 @@ require __DIR__ . '/../vendor/autoload.php';
 $app = AppFactory::create();
 
 $app->get('/', function (Request $request, Response $response, array $args) {
-    $response->getBody()->write("Hello");
     return $response;
 });
 
@@ -22,53 +21,12 @@ $app->run();
 echo "{}";
 
 
-$d = [
-    [
-        'id' => 1,
-        'parent_id' => 0,
-        'name' => '/',
-        'type' => 0
-    ],
-    [
-        'id' => 2,
-        'parent_id' => 1,
-        'name' => 'etc',
-        'type' => 0
-    ],
-    [
-        'id' => 5,
-        'parent_id' => 2,
-        'name' => 'dir',
-        'type' => 0
-    ],
-    [
-        'id' => 10,
-        'parent_id' => 5,
-        'name' => 'subfile',
-        'type' => 1
-    ],
-    [
-        'id' => 3,
-        'parent_id' => 2,
-        'name' => 'file',
-        'type' => 1
-    ],
-    [
-        'id' => 4,
-        'parent_id' => 1,
-        'name' => 'usr',
-        'type' => 0
-    ],
-];
 
-$tree = new \Lists\Lists();
-$t = $tree->flatToTree($d, 0);
+$tree = new \Lists\Tree();
 
-echo '<pre>';
-print_r($t);
+$db = new \Lists\MariaDb('mysql:dbname=lists;host=backend-mariadb;port=3306', 'root', 'lists');
+//$db->createTestTable();
+//$db->createTestData();
 
-/*$connection = new PDO('mysql:dbname=lists;host=backend-mariadb;port=3306', 'root', 'lists', [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES => false,
-]);*/
+print_r($tree->flatToTree2($db->all()));
+print_r($db->all());

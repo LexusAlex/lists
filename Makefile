@@ -27,9 +27,9 @@ docker-build:
 docker-rm-volume:
 	docker volume prune
 
-# Запустить установку пакетов composer
-backend-composer-install:
-	docker-compose run --rm backend-php-cli composer install
+# Запустить обновление пакетов composer
+backend-composer-update:
+	docker-compose run --rm backend-php-cli composer update
 
 # Обновить классы для автозагрузчика
 backend-composer-dump-autoload:

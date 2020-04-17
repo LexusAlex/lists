@@ -14,7 +14,7 @@ services:
 
     frontend:
         build:
-            context: frontend/docker/development/nginx/
+            context: frontend/docker/development/nginx
         depends_on:
             - frontend-node-server
 
@@ -66,6 +66,7 @@ services:
             MYSQL_DATABASE: lists
         volumes:
             - mariadb:/var/lib/mysql
+            - ./backend/docker/development/mariadb/custom.cnf:/etc/mysql/conf.d/custom.cnf
         ports:
             - "3306:3306"
 
