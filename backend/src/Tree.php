@@ -28,7 +28,7 @@ class Tree
         });
     }
 
-    public function flatToTree2(array $flat_array, $parent_id = 0) {
+    public function flatToTree2(array $flat_array, $parent_id = 0, &$result = []) {
 
         /*
         return array_map(function (&$key ,$item) {
@@ -43,16 +43,60 @@ class Tree
             return $acc;
         },[]);
         */
+    }
 
+    public function createTree(&$list, $parent){
         $tree = array();
-
-        foreach ($flat_array as $id => &$node) {
-            if ($node['parent_id'] == ''){
-                $tree[$node['parent_id']] =&$node;
-            }  else {
-                $tree[$node['parent_id']]['children'][$node['id']]  = &$node;
+        foreach ($parent as $k => $l){
+            if(isset($list[$l['id']])){
+                $l['children'] = $this->createTree($list, $list[$l['id']]);
             }
+            $tree[] = $l;
         }
         return $tree;
     }
+
+    public function build_tree($flat, $pidKey, $idKey = null)
+    {
+        $grouped = array();
+        foreach ($flat as $sub) {
+            $grouped[$sub[$pidKey]][] = $sub;
+        }
+
+        $fnBuilder = function ($siblings) use (&$fnBuilder, $grouped, $idKey) {
+            foreach ($siblings as $k => $sibling) {
+                $id = $sibling[$idKey];
+                if (isset($grouped[$id])) {
+                    $sibling['children'] = $fnBuilder($grouped[$id]);
+                }
+                $siblings[$k] = $sibling;
+            }
+            return $siblings;
+        };
+        $tree = $fnBuilder($grouped[null]);
+        return $tree;
+    } // end of build_tree.
+
+    function reduce($func, $tree, $accumulator)
+    {
+        $reduce = function ($f, $node, $acc) use (&$reduce) {
+            $children = $node['children'] ?? [];
+            $newAcc = $f($acc, $node);
+
+            //if ($node['type'] == 1) {
+            //    return $newAcc;
+            //}
+
+            return array_reduce(
+                $children,
+                function ($iAcc, $n) use (&$reduce, &$f) {
+                    return $reduce($f, $n, $iAcc);
+                },
+                $newAcc
+            );
+        };
+
+        return $reduce($func, $tree, $accumulator);
+    }
 }
+

@@ -27,6 +27,19 @@ $tree = new \Lists\Tree();
 $db = new \Lists\MariaDb('mysql:dbname=lists;host=backend-mariadb;port=3306', 'root', 'lists');
 //$db->createTestTable();
 //$db->createTestData();
+echo '<pre>';
 
-print_r($tree->flatToTree2($db->all()));
+/*
+$new = array();
+foreach ($db->all() as $a){
+    $new[$a['parent_id']][] = $a;
+}
+$tree = $tree->createTree($new, $new[1]); // changed
+print_r($tree);
+*/
+
+//print_r($tree->build_tree($db->all(),'parent_id', 'id'));
+
+print_r($tree->reduce(function ($acc, $n){ return $n;}, $tree->build_tree($db->all(),'parent_id', 'id'),[]));
+
 print_r($db->all());
